@@ -23,6 +23,7 @@ const embedsToLookFor = {
 	'[class^=tumblr-]': embedTumblr,
 	'.jetpack-slideshow': embedSlideshow,
 	'.embed-reddit': embedReddit,
+	'a[href*="pinterest.com"]': embedPinterest,
 };
 
 const cacheBustQuery = `?v=${ Math.floor( new Date().getTime() / ( 1000 * 60 * 60 * 24 * 10 ) ) }`; // A new query every 10 days
@@ -117,6 +118,15 @@ function embedFacebook( domNode ) {
 function embedReddit( domNode ) {
 	debug( 'processing reddit for ', domNode );
 	loadAndRun( 'https://embed.redditmedia.com/widgets/platform.js', noop );
+}
+
+function embedPinterest( domNode ) {
+	debug( 'processing pinterest for ', domNode );
+
+	debugger;
+	// need to do anything else here, like in other functions?
+
+	loadAndRun( 'https://assets.pinterest.com/js/pinit.js', noop );
 }
 
 let tumblrLoader;
