@@ -10,6 +10,8 @@ import classNames from 'classnames';
 import debugFactory from 'debug';
 const debug = debugFactory( 'calypso:stats:list-item' );
 import page from 'page';
+import { find, get } from 'lodash';
+import url from 'url';
 
 /**
  * Internal dependencies
@@ -37,6 +39,22 @@ export default localize(
 
 		addMenuListener: function() {
 			document.addEventListener( 'click', this.closeMenu );
+		},
+
+		isFollowersModule: function() {
+			return !! this.props.followList;
+		},
+
+		getSiteIdForFollow: function() {
+			return (
+				this.isFollowersModule &&
+				get(
+					find( this.props.followList.data, {
+						blog_domain: url.parse( this.props.data.link ).host,
+					} ),
+					'site_id'
+				)
+			);
 		},
 
 		removeMenuListener: function() {
@@ -95,7 +113,7 @@ export default localize(
 				} else if ( this.props.data.page && ! this.props.children ) {
 					gaEvent = [ 'Clicked', moduleName, 'Summary Link' ].join( ' ' );
 					page( this.props.data.page );
-				} else if ( this.props.data.link && ! this.props.children ) {
+				} else if ( this.props.data.link && ! this.props.children && ! this.getSiteIdForFollow() ) {
 					gaEvent = [ 'Clicked', moduleName, 'External Link' ].join( ' ' );
 
 					window.open( this.props.data.link );
@@ -217,8 +235,21 @@ export default localize(
 				}
 
 				if ( data.link ) {
+					let href = data.link;
+					let onClickHandler = this.preventDefaultOnClick;
+					if ( this.isFollowersModule ) {
+						const siteId = this.getSiteIdForFollow();
+						if ( siteId ) {
+							href = '';
+							onClickHandler = event => {
+								event.preventDefault();
+								page( `/read/blogs/${ siteId }` );
+								// TODO: add stat
+							};
+						}
+					}
 					itemLabel = (
-						<a onClick={ this.preventDefaultOnClick } href={ data.link }>
+						<a onClick={ onClickHandler } href={ href }>
 							{ labelItem.label }
 						</a>
 					);
