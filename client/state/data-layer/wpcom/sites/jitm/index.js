@@ -1,12 +1,17 @@
 /** @format */
 
 /**
+ * External Dependencies
+ */
+import { noop } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import { dispatchRequest } from 'state/data-layer/wpcom-http/utils';
 import { http } from 'state/data-layer/wpcom-http/actions';
 import { isJetpackSite } from 'state/sites/selectors';
-import { SECTION_SET, SELECTED_SITE_SET } from 'state/action-types';
+import { SECTION_SET, SELECTED_SITE_SET, JITM_DISMISS } from 'state/action-types';
 import { makeParser } from 'state/data-layer/wpcom-http/utils';
 import schema from './schema.json';
 import { clearJITM, insertJITM } from 'state/jitm/actions';
@@ -86,6 +91,31 @@ export const fetchJITM = ( state, dispatch, action ) => {
 		)
 	);
 };
+
+/**
+ * Dismisses a jitm on the jetpack site, it returns nothing useful and will return no useful error, so we'll
+ * fail and succeed silently.
+ * @param {function} dispatch The dispatch function
+ * @param {object} action The dismissal action
+ * @return {undefined}
+ */
+export const doDismissJITM = ( { dispatch }, action ) =>
+	dispatch(
+		http( {
+			apiNamespace: 'rest',
+			method: 'POST',
+			path: `/jetpack-blogs/${ action.siteId }/rest-api/`,
+			query: {
+				path: '/jetpack/v4/jitm',
+				body: JSON.stringify( {
+					feature_class: action.featureClass,
+					id: action.id,
+				} ),
+				http_envelope: 1,
+				json: false,
+			},
+		} )
+	);
 
 /**
  * Called when a route change might have occured
@@ -169,4 +199,5 @@ export default {
 			fromApi: makeParser( schema, {}, transformApiRequest ),
 		} ),
 	],
+	[ JITM_DISMISS ]: [ dispatchRequest( doDismissJITM, noop, noop, {} ) ],
 };
