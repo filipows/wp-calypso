@@ -89,9 +89,7 @@ const ProfileLinksAddOther = React.createClass( {
 	onSubmitResponse( error, data ) {
 		if ( error ) {
 			this.setState( {
-				lastError: this.props.translate(
-					'Unable to add link right now. Please try again later.'
-				),
+				lastError: this.props.translate( 'Unable to add link right now. Please try again later.' ),
 			} );
 		} else if ( data.duplicate ) {
 			this.setState( {
@@ -101,9 +99,7 @@ const ProfileLinksAddOther = React.createClass( {
 			} );
 		} else if ( data.malformed ) {
 			this.setState( {
-				lastError: this.props.translate(
-					'An unexpected error occurred. Please try again later.'
-				),
+				lastError: this.props.translate( 'An unexpected error occurred. Please try again later.' ),
 			} );
 		} else {
 			this.props.onSuccess();
@@ -173,4 +169,4 @@ const ProfileLinksAddOther = React.createClass( {
 	},
 } );
 
-export default localize(ProfileLinksAddOther);
+export default localize( ProfileLinksAddOther );

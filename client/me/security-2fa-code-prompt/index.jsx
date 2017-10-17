@@ -141,9 +141,7 @@ const Security2faCodePrompt = React.createClass( {
 
 		if ( error ) {
 			this.setState( {
-				lastError: this.props.translate(
-					'An unexpected error occurred. Please try again later.'
-				),
+				lastError: this.props.translate( 'An unexpected error occurred. Please try again later.' ),
 				lastErrorType: 'is-error',
 			} );
 		} else if ( ! data.success ) {
@@ -284,4 +282,4 @@ const Security2faCodePrompt = React.createClass( {
 	},
 } );
 
-export default localize(Security2faCodePrompt);
+export default localize( Security2faCodePrompt );

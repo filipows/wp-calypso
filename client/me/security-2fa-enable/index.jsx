@@ -166,9 +166,7 @@ const Security2faEnable = React.createClass( {
 
 		if ( error ) {
 			this.setState( {
-				lastError: this.props.translate(
-					'An unexpected error occurred. Please try again later.'
-				),
+				lastError: this.props.translate( 'An unexpected error occurred. Please try again later.' ),
 				lastErrorType: 'is-error',
 			} );
 		} else if ( ! data.success ) {
@@ -261,9 +259,7 @@ const Security2faEnable = React.createClass( {
 			);
 		}
 
-		return (
-			<p>{ this.props.translate( 'Then enter the six digit code provided by the app:' ) }</p>
-		);
+		return <p>{ this.props.translate( 'Then enter the six digit code provided by the app:' ) }</p>;
 	},
 
 	toggleMethod: function( event ) {
@@ -458,4 +454,4 @@ const Security2faEnable = React.createClass( {
 	},
 } );
 
-export default localize(Security2faEnable);
+export default localize( Security2faEnable );
