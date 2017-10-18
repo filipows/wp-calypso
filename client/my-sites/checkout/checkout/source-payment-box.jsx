@@ -8,7 +8,6 @@ import { assign, some } from 'lodash';
 /**
  * Internal dependencies
  */
-import PaymentBox from './payment-box';
 import { localize, translate } from 'i18n-calypso';
 import { abtest } from 'lib/abtest';
 import CartCoupon from 'my-sites/checkout/cart/cart-coupon';
@@ -16,7 +15,6 @@ import PaymentChatButton from './payment-chat-button';
 import config from 'config';
 import { PLAN_BUSINESS } from 'lib/plans/constants';
 import CartToggle from './cart-toggle';
-import AlternativePaymentMethods from './alternative-payment-methods';
 import TermsOfService from './terms-of-service';
 import Input from 'my-sites/domains/components/form/input';
 import cartValues from 'lib/cart-values';
@@ -30,8 +28,6 @@ class SourcePaymentBox extends PureComponent {
 		paymentType: PropTypes.string.isRequired,
 		cart: PropTypes.object.isRequired,
 		transaction: PropTypes.object.isRequired,
-		paymentMethods: PropTypes.array.isRequired,
-		onSelectPaymentMethod: PropTypes.func.isRequired,
 		redirectTo: PropTypes.func.isRequired,
 	}
 
@@ -130,7 +126,7 @@ class SourcePaymentBox extends PureComponent {
 		} );
 	}
 
-	content() {
+	render() {
 		const hasBusinessPlanInCart = some( this.props.cart.products, { product_slug: PLAN_BUSINESS } );
 		const showPaymentChatButton =
 			config.isEnabled( 'upgrades/presale-chat' ) &&
@@ -160,13 +156,6 @@ class SourcePaymentBox extends PureComponent {
 						<SubscriptionText cart={ this.props.cart } />
 					</div>
 
-					<AlternativePaymentMethods
-						cart={ this.props.cart }
-						paymentMethods={ this.props.paymentMethods }
-						selectedPaymentMethod={ this.props.paymentType }
-						onSelectPaymentMethod={ this.props.onSelectPaymentMethod }
-						/>
-
 					{
 						showPaymentChatButton &&
 						<PaymentChatButton
@@ -189,20 +178,6 @@ class SourcePaymentBox extends PureComponent {
 		}
 
 		return this.props.paymentType;
-	}
-
-	render() {
-		return (
-			<PaymentBox
-				classSet="ideal-payment-box"
-				title={ translate( 'Secure Payment with %(paymentProvider)s', {
-					args: {
-						paymentProvider: this.getPaymentProviderName()
-					}
-				} ) }>
-				{ this.content() }
-			</PaymentBox>
-		);
 	}
 }
 SourcePaymentBox.displayName = 'SourcePaymentBox';

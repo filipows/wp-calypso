@@ -184,45 +184,62 @@ const SecurePaymentForm = React.createClass( {
 	renderCreditCardPaymentBox() {
 		return (
 			<PaymentBox
-				selected="credit-card"
-				cards={ this.props.cards }
-				transaction={ this.props.transaction }
+				classSet="credit-card-payment-box"
 				cart={ this.props.cart }
-				countriesList={ countriesListForPayments }
-				initialCard={ this.getInitialCard() }
 				paymentMethods={ this.props.paymentMethods }
-				selectedSite={ this.props.selectedSite }
+				currentPaymentMethod="credit-card"
 				onSelectPaymentMethod={ this.selectPaymentBox }
-				onSubmit={ this.handlePaymentBoxSubmit }
-				transactionStep={ this.props.transaction.step }
-			/>
+			>
+				<CreditCardPaymentBox
+					cards={ this.props.cards }
+					transaction={ this.props.transaction }
+					cart={ this.props.cart }
+					countriesList={ countriesListForPayments }
+					initialCard={ this.getInitialCard() }
+					selectedSite={ this.props.selectedSite }
+					onSubmit={ this.handlePaymentBoxSubmit }
+					transactionStep={ this.props.transaction.step }
+				/>
+			</PaymentBox>
 		);
 	},
 
 	renderPayPalPaymentBox() {
 		return (
-			<PayPalPaymentBox
+			<PaymentBox
+				classSet="paypal-payment-box"
 				cart={ this.props.cart }
-				transaction={ this.props.transaction }
-				countriesList={ countriesListForPayments }
-				selectedSite={ this.props.selectedSite }
 				paymentMethods={ this.props.paymentMethods }
+				currentPaymentMethod="paypal"
 				onSelectPaymentMethod={ this.selectPaymentBox }
-				redirectTo={ this.props.redirectTo }
-			/>
+			>
+				<PayPalPaymentBox
+					cart={ this.props.cart }
+					transaction={ this.props.transaction }
+					countriesList={ countriesListForPayments }
+					selectedSite={ this.props.selectedSite }
+					redirectTo={ this.props.redirectTo }
+				/>
+			</PaymentBox>
 		);
 	},
 
 	renderSourcePaymentBox( paymentType ) {
 		return (
-			<SourcePaymentBox
+			<PaymentBox
+				classSet="paypal-payment-box"
 				cart={ this.props.cart }
-				transaction={ this.props.transaction }
 				paymentMethods={ this.props.paymentMethods }
-				paymentType={ paymentType }
+				currentPaymentMethod={ paymentType }
 				onSelectPaymentMethod={ this.selectPaymentBox }
-				redirectTo={ this.props.redirectTo }
-			/>
+			>
+				<SourcePaymentBox
+					cart={ this.props.cart }
+					transaction={ this.props.transaction }
+					paymentType={ paymentType }
+					redirectTo={ this.props.redirectTo }
+				/>
+			</PaymentBox>
 		);
 	},
 

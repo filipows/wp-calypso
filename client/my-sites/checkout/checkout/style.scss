@@ -156,7 +156,7 @@
 		padding: 16px 8px;
 
 		@include breakpoint( ">660px" ) {
-			padding: 30px 30px 20px 30px;
+			padding: 10px 30px 20px 30px;
 		}
 	}
 
@@ -818,6 +818,14 @@
 .checkout__payment-box-container {
 	span {
 		padding: 1em;
+	}
+
+	div.section-nav {
+		margin-bottom: 0;
+
+		& .section-nav-tabs__list > span {
+			font-weight: bold;
+		}
 	}
 
 	img {

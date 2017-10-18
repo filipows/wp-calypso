@@ -16,7 +16,6 @@ import cartValues from 'lib/cart-values';
 import CountrySelect from 'my-sites/domains/components/form/country-select';
 import Input from 'my-sites/domains/components/form/input';
 import notices from 'notices';
-import PaymentBox from './payment-box';
 import SubscriptionText from './subscription-text';
 import TermsOfService from './terms-of-service';
 import { abtest } from 'lib/abtest';
@@ -26,7 +25,6 @@ import config from 'config';
 import { PLAN_BUSINESS } from 'lib/plans/constants';
 import CartToggle from './cart-toggle';
 import wp from 'lib/wp';
-import AlternativePaymentMethods from './alternative-payment-methods';
 
 const wpcom = wp.undocumented();
 
@@ -148,7 +146,7 @@ export default localize(
 			} );
 		},
 
-		content: function() {
+		render: function() {
 			const hasBusinessPlanInCart = some( this.props.cart.products, {
 				product_slug: PLAN_BUSINESS,
 			} );
@@ -199,13 +197,6 @@ export default localize(
 							<SubscriptionText cart={ this.props.cart } />
 						</div>
 
-						<AlternativePaymentMethods
-							cart={ this.props.cart }
-							paymentMethods={ this.props.paymentMethods }
-							selectedPaymentMethod="paypal"
-							onSelectPaymentMethod={ this.props.onSelectPaymentMethod }
-						/>
-
 						{ showPaymentChatButton && (
 							<PaymentChatButton paymentType="paypal" cart={ this.props.cart } />
 						) }
@@ -215,17 +206,6 @@ export default localize(
 
 					<CartToggle />
 				</form>
-			);
-		},
-
-		render: function() {
-			return (
-				<PaymentBox
-					classSet="paypal-payment-box"
-					title={ this.props.translate( 'Secure Payment with PayPal' ) }
-				>
-					{ this.content() }
-				</PaymentBox>
 			);
 		},
 	} )
